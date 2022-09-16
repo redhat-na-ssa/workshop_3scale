@@ -1,0 +1,5 @@
+= 3scale Workshop
+
+Workshop focused in 3scale. Here are the labs available:
+
+image::doc/img/workshop-labs.png[Labs Available]

@@ -1,0 +1,237 @@
+:walkthrough: Set up the widely used OpenID connect pattern for Authentication.
+:next-lab-url: https://tutorial-web-app-webapp.{openshift-app-host}/tutorial/dayinthelife-integration.git-citizen-integrator-track-lab05/
+:3scale-url: https://www.3scale.net/
+:3scale-admin-url: https://{user-username}-admin.{openshift-app-host}/p/login
+:sso-url: https://keycloak-sso.{openshift-app-host}/auth/admin/{user-username}-realm/console
+:user-password: openshift
+
+ifdef::env-github[]
+:next-lab-url: ../lab05/walkthrough.adoc
+endif::[]
+
+[id='api-security']
+= Lab 4 - API Security
+
+In this lab you will discover how to set up the widely used OpenID connect pattern for Authentication.
+
+Audience: API Owners, Product Managers, Developers, Architects
+
+*Overview*
+
+Once you have APIs in your organization and have applications being written, you also want to be sure in many cases that the various types of users of the APIs are correctly authenticated. In this lab you will discover how to set up the widely used OpenID connect pattern for Authentication.
+
+*Why Red Hat?*
+
+The Red Hat SSO product provides important functionality for managing identities at scale. In this lab you will see how it fits together with 3scale and OpenShift.
+
+*Credentials:*
+
+Your username is: `{user-username}` +
+Your password is: `{user-password}`
+
+[type=walkthroughResource]
+.SSO Console
+****
+* link:{sso-url}[Console, window="_blank"]
+****
+
+[type=walkthroughResource]
+.3scale Admin Console
+****
+* link:{3scale-admin-url}[Console, window="_blank"]
+****
+
+[time=3]
+[id="sso-sign-on"]
+== Sign-in to Red Hat SSO
+
+. Launch a new tab on your web browser.
+. Navigate to the Solution Explorer on that tab.
+. Click on the *Red Hat Single Sign-On* link.
+
+. Log in to link:{sso-url}[SSO Admin, window="_blank"] web console using `{user-username}` and password: `{user-password}`. Click on *Log in*.
++
+image::images/sso-login-form.png[00-login-sso.png, role="integr8ly-img-responsive"]
+
+. Select *Clients* from the left menu.
++
+image::images/sso-clients-link.png[00-clients.png, role="integr8ly-img-responsive"]
++
+_A 3scale-admin client and service account was already created for you_.
+
+. Click on the *3scale-admin* link to view the details.
++
+image::images/sso-client-3scale-admin.png[00-3scale-admin.png, role="integr8ly-img-responsive"]
+
+. Click the *Credentials* tab.
++
+image::images/sso-3scale-client-creds.png[00-sa-credentials.png, role="integr8ly-img-responsive"]
+
+. Take note of the client *Secret*. Copy and save it or write it down as you will use it to configure 3scale.
++
+image::images/sso-3scale-admin-secret.png[00-sa-secret.png, role="integr8ly-img-responsive"]
++
+_The secret is set to `clientsecret` for this lab._
+
+. Click on **Service Account Roles** tab of the _3scale-Admin_ client:
++
+image::images/sso-3scale-admin-sa-roles.png[sa-roles.png, role="integr8ly-img-responsive"]
++
+NOTE: If you do not see the **Service Account Roles** tab, make sure **Service Accounts Enabled** is **ON**, **Standard Flow Enabled** is **OFF** and click on **Save**.
+
+. In _Client Roles_, enter **realm-management**. Select all the available roles and click on **Add Selected** to move to the Assigned Roles text box. Ignore if the roles are already under the Assigned Roles text box.
++
+image::images/sso-3scale-admin-sa-client-roles.png[sa-roles.png, role="integr8ly-img-responsive"]
+
+
+
+[type=verification]
+Were you able configure the Red Hat SSO correctly?
+
+[type=verificationFail]
+Try to redo this section, if any problem persists have your instructor check the Kubernetes pod that contains the RH-SSO application.
+
+[time=3]
+[id="add-user-realm"]
+== Add User to Realm
+
+. Click on the *Users* menu on the left side of the screen.
++
+image::images/sso-users-link.png[00-users.png, role="integr8ly-img-responsive"]
+
+. Click the *Add user* button.
++
+image::images/sso-add-user-button.png[00-add-user.png, role="integr8ly-img-responsive"]
+
+. Type `apiuser` as the **Username**.
++
+image::images/sso-add-user-username.png[00-username.png, role="integr8ly-img-responsive"]
+
+. Click on the *Save* button.
+. Click on the *Credentials* tab to reset the password. Type `apipassword` as the **New Password** and **Password Confirmation**. Turn OFF the **Temporary** to avoid the password reset at the next login.
++
+image::images/sso-user-cred-set.png[sso-user-cred-set, role="integr8ly-img-responsive"]
+
+. Click on **Set Password**.
+. Click on the **Set password** button in the pop-up dialog.
++
+image::images/set-user-pwd.png[set-user-pwd, role="integr8ly-img-responsive"]
+
+[type=verification]
+Were you able to add a user?
+
+[type=verificationFail]
+Try to redo this section, if any problem persists have your instructor check the Kubernetes pod that contains the RH-SSO application.
+
+_Now you have a user to test your SSO integration._
+
+[time=4]
+[id="configure-3scale-integration]
+== Configure 3scale Integration
+
+. Log in to link:{3scale-admin-url}[3scale Admin, window="_blank"] web console using `{user-username}` and password: `{user-password}`.
++
+image::images/3scale-login.png[3scale-login.png, role="integr8ly-img-responsive"]
+
+. The first page you will land is the _API Management Dashboard_. Click on the kebab menu of the **LOCATION** API and select **Integration**
++
+image::images/3scale-product-kebab.png[3scale-product-kebab.png, role="integr8ly-img-responsive"]
+
+. Click on the **Settings** to edit the API settings for the gateway.
++
+image::images/3scale-location-settings.png[03-edit-settings.png, role="integr8ly-img-responsive"]
+
+. Scroll down the page, under the _AUTHENTICATION_ deployment options, select **OpenID Connect**.
++
+image::images/3scale-location-auth-oidc.png[04-authentication.png, role="integr8ly-img-responsive"]
+
+. Set the following values for **Authentication Settings**:
+** OpenID Connect Issuer Type: *`Red Hat Single Sign-On`*
+** OpenID Connect Issuer: *`https://3scale-admin:clientsecret@keycloak-sso.{openshift-app-host}/auth/realms/{user-username}-realm`*
++
+image::images/3scale-location-oidc-settings.png[05-authentication-settings.png, role="integr8ly-img-responsive"]
+
+. Scroll down to the _CREDENTIALS LOCATION_ and select **As HTTP Headers**.
++
+image::images/http-headers.png[http-headers.png, role="integr8ly-img-responsive"]
+
+. Scroll down to the bottom and click on **Update Product**.
+
+. Notice that the _Configuration_ has a warning indicating the API configuration changes are updated. Click on **Configuration** link.
++
+image::images/3scale-location-config.png[08-back-integration.png, role="integr8ly-img-responsive"]
+
+. Click on the **Promote v.2 to Staging APIcast** button.
++
+image::images/3scale-location-promote-staging.png[08-back-integration.png, role="integr8ly-img-responsive"]
+
+. Promote to Production by clicking the **Promote v.2 to Production APIcast** button.
++
+image::images/3scale-location-promote-prod.png[08a-promote-production.png, role="integr8ly-img-responsive"]
+
+[type=verification]
+Were you able to reconfigure APIcast?
+
+[type=verificationFail]
+Try to redo this section, if any problem persists have your instructor check the Kubernetes pod that contains the 3scale API Management application.
+
+
+
+[time=3]
+[id="create-test-app]
+== Create a Test App
+
+. Go to the _Audience_ dropdown and click on **Developers**.
++
+image::images/3scale-audience-dev.png[09-developers.png, role="integr8ly-img-responsive"]
+
+. Click on the **Applications** link.
++
+image::images/3scale-dev-apps.png[10-applications.png, role="integr8ly-img-responsive"]
+
+. Click on *dev_location_app* link.
++
+image::images/3scale-dev-location-app.png[11-create-application.png, role="integr8ly-img-responsive"]
+
+. Check the API Credentials section. Click on **Add Random Key** for _Client Secret_.
++
+image::images/3scale-dev-app-client-secret.png[11-create-application.png, role="integr8ly-img-responsive"]
++
+**NOTE: If the Client ID & Secret are not seen, navigate to the Application page again and you should see the secret generated**.
+
+. _Edit_ the _Redirect URL_ and enter the value **`http://www-{user-username}.{openshift-app-host}/`**
+
+
+. Note the **Client ID** and the **Client Secret**, which is required later to test your integration.
++
+image::images/3scale-dev-app-credentials.png[14-app-credentials.png, role="integr8ly-img-responsive"]
+
+. Navigate back to the SSO portal and click on **Clients** list. You should see the new client with same client id as in 3scale created in SSO.
++
+image::images/sso-app-client-list.png[sso-app-client-list.png.png, role="integr8ly-img-responsive"]
+
+[type=verification]
+Were you able to update an application?
+
+[type=verificationFail]
+Try to redo this section, if any problem persists have your instructor check the Kubernetes pod that contains the 3scale API Management application.
+
+_Congratulations! You have now created an application to test your OpenID Connect Integration._
+
+[time=4]
+[id="summary"]
+== Summary
+
+Now that you can secure your API using three-leg authentication with Red Hat Single Sign-On, you can leverage the current assets of your organization like current LDAP identities or even federate the authentication using other IdP services.
+
+For more information about Single Sign-On, you can check its https://access.redhat.com/products/red-hat-single-sign-on[page].
+
+You can now proceed to `Lab 5`.
+
+[time=3]
+[id="further-reading"]
+== Notes and Further Reading
+
+* http://3scale.net[Red Hat 3scale API Management]
+* https://access.redhat.com/products/red-hat-single-sign-on[Red Hat Single Sign On]
+* https://developers.redhat.com/blog/2017/11/21/setup-3scale-openid-connect-oidc-integration-rh-sso/[Setup OIDC with 3scale]

@@ -1,0 +1,141 @@
+:walkthrough: Bring your APIs to life
+:testing-url: https://reqbin.com/curl
+:microcks-url: https://microcks-microcks.{openshift-app-host}
+:next-lab-url: https://tutorial-web-app-webapp.{openshift-app-host}/tutorial/dayinthelife-integration.git-citizen-integrator-track-lab03/
+:user-password: openshift
+:wip-link: http://location-service-international.{openshift-app-host}/locations
+
+ifdef::env-github[]
+:next-lab-url: ../lab03/walkthrough.adoc
+endif::[]
+
+[id='api-mocking']
+= Lab 2 - API Mocking
+
+In this lab you will use Microcks to configure a REST mock service for the API definition you created in the previous lab. REST mock services allows you to simulate a REST API service when you are in a prototyping stage of your API program journey.
+
+Audience: Developers, Architects, Testers, Quality Engineers
+
+*Overview*
+
+When building and working with APIs, you often need to simulate the responses of the system before it has been fully completed. This is what we explore in this workshop - mocking up API structures quickly so they can be subjected to testing without having to create all the final service code.
+
+*Why Red Hat?*
+
+Red Hat combines a number of commercial and Open Source tools to cover each part of the API Design lifecycle. In this lab we'll be using the http://microcks.github.io/[Microcks] open source tool.
+
+*Skipping The Lab*
+
+If you are planning to follow the next lab, here is a link:{wip-link}[link] to the REST mock service running the Location API.
+
+*Credentials:*
+
+Your username is: `{user-username}` +
+Your password is: `{user-password}`
+
+[type=walkthroughResource]
+.Microcks
+****
+* link:{microcks-url}[Console, window="_blank"]
+****
+
+[time=2]
+[id="create-microcks-job"]
+== Create a Microcks Job
+
+. Launch a new tab on your web browser.
+. Navigate to the Solution Explorer on that tab.
+. Click on the *Microcks* link.
++
+image::images/mock-20.png[mock-openshift-login, role="integr8ly-img-responsive"]
+
+. Log in to link:{microcks-url}[Microcks, window="_blank"] web console using `{user-username}` and password: `{user-password}`.
++
+image::images/mock-09.png[mock-openshift-login, role="integr8ly-img-responsive"]
+
+. You are now in the main Microcks page. Click the *Importers* button to access the Importers page.
++
+image::images/mock-11.png[mock-jobs, role="integr8ly-img-responsive"]
+
+. Click the *Upload* button to upload the *Locations-{user-username}.yaml* spec generated from Lab 1.
++
+image::images/mock-12.png[mock-jobs, role="integr8ly-img-responsive"]
+
+. Click on _Choose File_ to select the file you created in Lab 1. Click on *Upload*.  Then click on *Close*.
++
+image::images/mock-13.png[mock-jobs, role="integr8ly-img-responsive"]
++
+_Congratulations! The spec is successfully imported_
+
+. Navigate to **APIs | Services** tab.
++
+image::images/mock-14.png[mock-jobs, role="integr8ly-img-responsive"]
+
+. Click on the link for your username. eg: *Locations-{user-username}*.
++
+image::images/mock-15.png[mock-jobs, role="integr8ly-img-responsive"]
+
+. Click on the arrow to expand the *Operation GET /locations*.
++
+image::images/mock-16.png[mock-mock-service, role="integr8ly-img-responsive"]
+
+. You can check that the example we added to the definition in Lab 1 will be used to return the mock values. Copy and save the *Mocks URL*, we will use that endpoint to test the REST mock service.
++
+image::images/mock-17.png[mock-mock-operation, role="integr8ly-img-responsive"]
+
+[type=verification]
+Was the *Mocks URL* created successfully?
+
+[type=verificationFail]
+Try to redo this section, if any problem persists have your instructor check the Kubernetes pod that contains the Microcks application.
+
+
+[time=2]
+[id="test-mock-service"]
+== Test the REST Mock Service
+
+[type=taskResource]
+
+We now have a working REST mock service listening for requests. We will use an online cURL tool to test it.
+
+. Open a browser window and navigate to https://reqbin.com/curl.
+
+. Copy and paste the Mock URL from earlier step. It should look like.
++
+[source,bash,subs="attributes+"]
+----
+curl https://microcks-microcks.{openshift-app-host}/rest/Locations-{user-username}/1.0.0/locations
+----
+
+. Click the *Run* button.
++
+image::images/req-bin-run.png[req-bin-run, role="integr8ly-img-responsive"]
+
+. The page will load the response information from the service. The _Content_ tab contains the examples we added during the design phase. You can also review the _Headers_ tab if you'd like.
++
+image::images/req-bin-result.png[req-bin-result, role="integr8ly-img-responsive"]
++
+image::images/req-bin-header.png[req-bin-header, role="integr8ly-img-responsive"]
+
+[type=verification]
+Did the response include the example JSON added during the design phase?
+
+
+[time=2]
+[id="summary"]
+== Summary
+
+In this lab you used Microcks to configure a REST mock service for the API definition you created in the previous lab. REST mock services allows you to simulate a REST API service when you are in a prototyping stage of your API program journey.
+
+Microcks allows you to test a number of various responses for client application requests. When deploying API, Microservices or SOA practices at large scale, Microcks solves the problems of providing and sharing consistent documentation and mocks to the involved teams. It acts as a central repository and server that can be used for browsing but also by your Continuous Integration builds or pipelines.
+
+You can now proceed to `Lab 3`.
+
+[time=4]
+[id="further-reading"]
+== Notes and Further Reading
+
+* Microcks
+ ** http://microcks.github.io/[Webpage]
+ ** https://microcks.io/documentation/automating/jenkins/[Jenkins Plugin]
+ ** https://microcks.io/documentation/installing/deployment-options/[Deployment Options]
