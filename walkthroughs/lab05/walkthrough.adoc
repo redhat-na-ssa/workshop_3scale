@@ -12,7 +12,7 @@ ifdef::env-github[]
 endif::[]
 
 [id='testing-web-app']
-= Lab 5 - Testing the web application
+= Lab 5 - Testing the Web Application
 
 In this lab you will test the security enhancements for the International Inc. Locations web application.
 
@@ -43,50 +43,48 @@ Your password is: `{user-password}`
 * link:{sso-url}[Console, window="_blank"]
 ****
 
+[type=walkthroughResource]
+.3scale Console
+****
+* link:{3scale-admin-url}[Console, window="_blank"]
+****
+
+
 [time=5]
 [id="update-openshift"]
-== Update OpenShift Deployment
+== Update Application Deployment
 
 OpenShift allows you to automatically redeploy your changes when you setup a Continuous Integration / Continuous Deployment (CI/CD) pipeline through the use of a webhook. For this lab we will trigger the new build and deployment manually through the OpenShift Console.
 
-. Launch a new tab on your web browser.
-. Navigate to the Solution Explorer on that tab.
-. Click on the *Red Hat OpenShift* link.
-
-. Open your link:{openshift-url}[OpenShift Console, window="_blank"]. Navigate to your project's overview page. It will be called `{user-username}`.
-
-. Scroll down and click in the *www* link in the _Builds_ section.
+. On the Resource section, click on the *OpenShift Console* link.
+. Authenticate using your user and password.
+. Navigate to your project's overview page. It will be called `{user-username}`.
+. Click on *Topology* view.
+. Click on the pod icon to open the deployment information.
+. On the top, click on the deployment name, *www*
 +
-image::images/www-builds-list.png[01-scroll-down, role="integr8ly-img-responsive"]
+image::images/01-topology-view.png[01-topology-view, role="integr8ly-img-responsive"]
 
-. In the build configuration page, find the *CLIENT_ID* value. It should be `CHANGE_ME`.
+. With the deployment configuration page open, click on *environment*
+
+image::images/02-deploy-config.png[02-deploy-config, role="integr8ly-img-responsive"]
+
+. In the deployment configuration page, find the *CLIENT_ID* value. It should be `CHANGE_ME`.
 +
-image::images/www-build-env-client-id.png[02-client-id, role="integr8ly-img-responsive"]
+image::images/03-deploy-env.png[03-deploy-env, role="integr8ly-img-responsive"]
 
-. Find the value of the client Id from the Developer Portal in the previous lab and enter this value for *CLIENT_ID* in the build.
+. We need to retrieve the CLIENT_ID created for our Application. In another browse tab, go back to 3scale Admin Console and look for the `dev_location_app`(Audience > Applications > Listing).
 +
-image::images/3scale-dev-portal-clientid.png[3scale-client-id, role="integr8ly-img-responsive"]
+image::images/04-app-clientid.png[04-app-clientid, role="integr8ly-img-responsive"]
 
-. Click the *Save* button to persist the changes. A green pop up will show you that the changes were saved.
+. After copying the *client_id*, go back to the deployment configuration tab. Update the *CLIENT_ID* value and then click on the *save* button. This will trigger a new application deployment, now running with the right configuration.
 
-. Click the *Start Build* button to trigger a new build using the new environment variables pointing to your service.
 +
-image::images/www-builds-start-build.png[03-start-build, role="integr8ly-img-responsive"]
-
-. A new build will be triggered. Expand the logs and monitor until the build is marked complete.
+image::images/05-save-deploy.png[05-save-deploy, role="integr8ly-img-responsive"]
 +
-image::images/www-builds-2-complete.png[04-view-build, role="integr8ly-img-responsive"]
-+
-_The build process checks out the code from the git repo, runs a source-to-image container image build, and redeploys the container with the new image using a rolling upgrade strategy._
-
-. Wait for until the new Build to complete and the rolling upgrade to finish to test your new deployment.
-+
-image::images/ocp-dev-topology-www.png[22-updated-app, role="integr8ly-img-responsive"]
-
-_Now the application is configured and ready to be tested._
 
 [type=verification]
-Was the build successful?
+Did you deploy the application successfully?
 
 [type=verificationFail]
 Try to redo this section, if any problem persists have your instructor check the build.
@@ -97,7 +95,7 @@ Try to redo this section, if any problem persists have your instructor check the
 
 Redirect URLs are a critical part of the OAuth flow. After a user successfully authorizes an application, the authorization server will redirect the user back to the application with either an authorization code or access token in the URL. Because the redirect URL will contain sensitive information, it is critical that the service doesn't redirect the user to arbitrary locations.
 
-. Open a browser window and navigate to link:{sso-url}[SSO Admin, window="_blank"]
+. Navigate to link:{sso-url}[SSO Admin, window="_blank"]
 
 . Log into Red Hat Single Sign On using your credentials. Click on *Sign In*.
 +
@@ -132,7 +130,7 @@ image::images/consume-24.png[24-client-application, role="integr8ly-img-responsi
 | OFF
 
 | Valid Redirect URIs
-| http://www-{user-username}.{openshift-app-host}/*
+| https://www-{user-username}.{openshift-app-host}/*
 
 | Web Origins
 | *
@@ -153,17 +151,20 @@ Try to redo this section, if any problem persists have your instructor check the
 [id="test-webpage"]
 == Opening International Inc Web Page
 
-International Inc web development create a Node.js application for the company home page. They added a map service to locate the offices around the world. In this step you will deploy that application.
+International Inc web development team created a Node.js application for the company home page. They added a page to locate their offices around the world.
+In this step you will deploy that application.
 
-. Open a browser tab and navigate to `http://www-{user-username}.{openshift-app-host}`.
+. Open a new browser window in incognito mode. Since you already logged in SSO, you already have a valid token for you current browser. We want you log again, but now using the user we created in the previous lab.
+
+. Navigate to `https://www-{user-username}.{openshift-app-host}`.
 
 . You should now see what the development team created for International Inc. Click *LOCATIONS* to check the locations page.
 +
-image::images/consume-13.png[10-application-page, role="integr8ly-img-responsive"]
+image::images/10-application-page.png[10-application-page, role="integr8ly-img-responsive"]
 
 . You can notice now the *Sign In* button in the page.
 +
-image::images/consume-222.png[11-Sign-in, role="integr8ly-img-responsive"]
+image::images/11-Sign-in.png[11-Sign-in, role="integr8ly-img-responsive"]
 
 [type=verification]
 Does the *Sign In* button appear?
@@ -181,16 +182,14 @@ Try to redo this section, if any problem persists have your instructor check the
  ** Username: *apiuser*
  ** Password: *apipassword*
 +
-image::images/consume-23.png[23-realm-login, role="integr8ly-img-responsive"]
+image::images/23-realm-login.png[23-realm-login, role="integr8ly-img-responsive"]
 
-. You will be redirected again to the *LOCATIONS* page where now you will be able to see the map with the International Inc Offices.
+. You will be redirected again to the *LOCATIONS* page where now you will be able to select the International Inc Offices types.
 +
-image::images/consume-14.png[11-locations-page, role="integr8ly-img-responsive"]
-
-
+image::images/11-locations-page.png[11-locations-page, role="integr8ly-img-responsive"]
 
 [type=verification]
-Are you able to observe the new locations?
+Are you able to search for locations?
 
 [type=verificationFail]
 Try to redo this section, if any problem persists have your instructor check the Kubernetes pod that contains the web application.

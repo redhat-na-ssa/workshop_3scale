@@ -12,13 +12,13 @@ endif::[]
 [id='api-security']
 = Lab 4 - API Security
 
-In this lab you will discover how to set up the widely used OpenID connect pattern for Authentication.
+In this lab you will discover how to set up the widely used OpenID protocol for Authentication.
 
 Audience: API Owners, Product Managers, Developers, Architects
 
 *Overview*
 
-Once you have APIs in your organization and have applications being written, you also want to be sure in many cases that the various types of users of the APIs are correctly authenticated. In this lab you will discover how to set up the widely used OpenID connect pattern for Authentication.
+Once you have APIs in your organization and have applications being written, you also want to be sure in many cases that the various types of users of the APIs are correctly authenticated. In this lab you will discover how to set up the widely used OpenID protocol for Authentication.
 
 *Why Red Hat?*
 
@@ -45,10 +45,7 @@ Your password is: `{user-password}`
 [id="sso-sign-on"]
 == Sign-in to Red Hat SSO
 
-. Launch a new tab on your web browser.
-. Navigate to the Solution Explorer on that tab.
-. Click on the *Red Hat Single Sign-On* link.
-
+. On the Resources sections, click on the *Red Hat Single Sign-On* link.
 . Log in to link:{sso-url}[SSO Admin, window="_blank"] web console using `{user-username}` and password: `{user-password}`. Click on *Log in*.
 +
 image::images/sso-login-form.png[00-login-sso.png, role="integr8ly-img-responsive"]
