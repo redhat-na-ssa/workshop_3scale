@@ -64,7 +64,7 @@ image::images/import-git.png[Import from Git, role="integr8ly-img-responsive"]
 
 {empty} +
 
-* In the next step, add `https://gitlab.com/3scale-app-demos/fruits-api` as the git repo. This is a *Quarkus* application that exposes a simple REST API with an OpenAPI schema.
+* In the next step, add `https://github.com/redhat-na-ssa/workshop_3scale_fruits-api` as the git repo. This is a *Quarkus* application that exposes a simple REST API with an OpenAPI schema.
 
 {empty} +
 
@@ -72,7 +72,15 @@ image::images/quarkus-app.png[Quarkus App, role="integr8ly-img-responsive"]
 
 {empty} +
 
-* Click on `Create`. In the topology view you will see that a new application was added and that the image build is running.
+* Set the *Application Name* and *Name* as `fruits-api`. Click on `Create`.
+
+{empty} +
+
+image::images/fruits-api.png[App name, role="integr8ly-img-responsive"]
+
+{empty} +
+
+* In the topology view you will see that a new application was added and that the image build is running.
 
 {empty} +
 
