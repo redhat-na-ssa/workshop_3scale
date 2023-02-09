@@ -75,7 +75,8 @@ image::images/3scale-dev-portal-main-layout.png[12-main-layout.png, role="integr
 ----
 <img src="https://www.redhat.com/profiles/rh/themes/redhatdotcom/img/logo.png" style=“width:150px;height:30px;border:0;” alt="{{ provider.name }}">
 ----
-+
+{empty} +
+
 image::images/3scale-dev-portal-navbar.png[13-custom-logo.png, role="integr8ly-img-responsive"]
 
 . Click the _Publish_ button at the bottom of the editor to save the changes and made them available in the site.
@@ -161,7 +162,7 @@ image::images/3scale-dev-portal-see-app.png[16f-dev-signin.png, role="integr8ly-
 +
 image::images/3scale-dev-portal-clientinfo.png[16g-user-credentials.png, role="integr8ly-img-responsive"]
 
-. _Edit_ the _Redirect URL_ and enter the value **`http://www-{user-username}.{openshift-app-host}/`**
+. From here you can also edit the *Redirect URL* value for your application.
 
 [type=verification]
 Were you able to customize the developer portal?

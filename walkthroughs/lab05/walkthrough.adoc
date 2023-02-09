@@ -54,7 +54,7 @@ Your password is: `{user-password}`
 [id="update-openshift"]
 == Update Application Deployment
 
-OpenShift allows you to automatically redeploy your changes when you setup a Continuous Integration / Continuous Deployment (CI/CD) pipeline through the use of a webhook. For this lab we will trigger the new build and deployment manually through the OpenShift Console.
+You can change an Application behavior by simply passing new parameters to it. Let's change the application deployment configuration.
 
 . On the Resource section, click on the *OpenShift Console* link.
 . Authenticate using your user and password.
@@ -66,7 +66,7 @@ OpenShift allows you to automatically redeploy your changes when you setup a Con
 image::images/01-topology-view.png[01-topology-view, role="integr8ly-img-responsive"]
 
 . With the deployment configuration page open, click on *environment*
-
++
 image::images/02-deploy-config.png[02-deploy-config, role="integr8ly-img-responsive"]
 
 . In the deployment configuration page, find the *CLIENT_ID* value. It should be `CHANGE_ME`.
@@ -78,13 +78,12 @@ image::images/03-deploy-env.png[03-deploy-env, role="integr8ly-img-responsive"]
 image::images/04-app-clientid.png[04-app-clientid, role="integr8ly-img-responsive"]
 
 . After copying the *client_id*, go back to the deployment configuration tab. Update the *CLIENT_ID* value and then click on the *save* button. This will trigger a new application deployment, now running with the right configuration.
-
 +
 image::images/05-save-deploy.png[05-save-deploy, role="integr8ly-img-responsive"]
-+
+
 
 [type=verification]
-Did you deploy the application successfully?
+Did you deploy it successfully?
 
 [type=verificationFail]
 Try to redo this section, if any problem persists have your instructor check the build.
@@ -154,7 +153,7 @@ Try to redo this section, if any problem persists have your instructor check the
 International Inc web development team created a Node.js application for the company home page. They added a page to locate their offices around the world.
 In this step you will deploy that application.
 
-. Open a new browser window in incognito mode. Since you already logged in SSO, you already have a valid token for you current browser. We want you log again, but now using the user we created in the previous lab.
+. Open a new browser window in incognito mode. _(Since you already logged in SSO, you already have a valid token for you current browser. We want you log again, but now using the user we created in the previous lab.)_
 
 . Navigate to `https://www-{user-username}.{openshift-app-host}`.
 

@@ -307,7 +307,9 @@ In this section, you can test the API staging and production URLs and ensure the
 . Copy the Staging curl Url and paste it in the reqbin text box as shown below and click on **Run**.
 +
 image::images/staging-curl.png[staging-curl, role="integr8ly-img-responsive"]
-+
+
+{empty} +
+
 image::images/req-bin-run.png[req-bin-run, role="integr8ly-img-responsive"]
 
 . Check that you get a **Status: 200(OK)** response and get a valid response message body.
